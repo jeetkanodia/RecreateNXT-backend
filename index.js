@@ -1,8 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const blogRoutes = require("./routes/blogs");
+// const blogRoutes = require("./routes/blogs");
 const userRoutes = require("./routes/user");
+const gifRoutes = require("./routes/gifs");
 const cors = require("cors");
 // express app
 const app = express();
@@ -15,7 +16,7 @@ app.use(
     allowedHeaders: "Content-Type, Authorization",
   })
 );
-
+// varun
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -25,7 +26,7 @@ app.use((req, res, next) => {
 
 // routes
 //app.use("/api/blogs", blogRoutes);
-
+app.use("/api/gifs", gifRoutes);
 app.use("/api/user", userRoutes);
 
 app.get("/", (req, res) => {
@@ -44,3 +45,4 @@ mongoose
   .catch((error) => {
     console.log(error);
   });
+// varun gandu

@@ -13,18 +13,23 @@ const userSchema = new Scheme({
     type: String,
     required: true,
   },
-  name: {
+  username: {
     type: String,
     required: true,
     unique: true,
   },
+  role: {
+    type: String,
+    required: true,
+    default: "user",
+  },
 });
 
 // set up a static method to handle user signup
-userSchema.statics.signup = async function (email, password, name) {
+userSchema.statics.signup = async function (email, password, username) {
   // validation
-  if (!email || !password || !name) {
-    throw Error("Missing email or password or name");
+  if (!email || !password || !username) {
+    throw Error("Missing email or password or username");
   }
   if (!validator.isEmail(email)) {
     throw Error("Invalid email");
@@ -46,12 +51,12 @@ userSchema.statics.signup = async function (email, password, name) {
   const user = await this.create({
     email,
     password: hash,
-    name,
+    username,
   });
 
   return user;
 };
-
+// varun gandu
 // static login method
 
 userSchema.statics.login = async function (email, password) {
