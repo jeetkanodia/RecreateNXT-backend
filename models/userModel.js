@@ -39,7 +39,6 @@ userSchema.statics.signup = async function (email, password, username) {
       "Password must be at least 8 characters long and contain at least 1 lowercase, 1 uppercase, 1 number, and 1 symbol"
     );
   }
-
   const exists = await this.findOne({ email });
   if (exists) {
     throw Error("Email already exists");
@@ -47,27 +46,27 @@ userSchema.statics.signup = async function (email, password, username) {
 
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
-
   const user = await this.create({
     email,
     password: hash,
     username,
+    role: "user",
   });
 
   return user;
 };
-// varun gandu
+//
 // static login method
 
-userSchema.statics.login = async function (email, password) {
+userSchema.statics.login = async function (username, password) {
   // validation
-  if (!email || !password) {
-    throw Error("Missing email or password");
+  if (!username || !password) {
+    throw Error("Missing username or password");
   }
 
-  const user = await this.findOne({ email });
+  const user = await this.findOne({ username });
   if (!user) {
-    throw Error("Email does not exist");
+    throw Error("user does not exist");
   }
 
   const auth = await bcrypt.compare(password, user.password);
