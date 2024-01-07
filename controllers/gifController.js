@@ -1,12 +1,24 @@
 const Gif = require("../models/gifModel");
 const mongoose = require("mongoose");
-
+const User = require("../models/userModel");
 //get random gif
 const getRandomGif = async (req, res) => {
-  const gif = await Gif.aggregate([{ $sample: { size: 1 } }]);
+  let gif;
+  if (req.user.activeGif[0] === undefined) {
+    gif = await Gif.aggregate([{ $sample: { size: 1 } }]);
 
-  if (gif.length === 0) return res.status(404).json({ error: "No gifs found" });
-
+    if (gif.length === 0)
+      return res.status(404).json({ error: "No gifs found" });
+    console.log("gif"); // update user's activeGif
+    await User.findOneAndUpdate(
+      { _id: req.user._id },
+      {
+        activeGif: gif,
+      }
+    );
+  } else {
+    gif = req.user.activeGif;
+  }
   res.status(200).json({ status: true, data: gif });
 };
 

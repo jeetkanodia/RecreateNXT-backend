@@ -23,6 +23,10 @@ const userSchema = new Scheme({
     required: true,
     default: "user",
   },
+  activeGif: {
+    type: Object,
+    default: {},
+  },
 });
 
 // set up a static method to handle user signup
@@ -51,6 +55,7 @@ userSchema.statics.signup = async function (email, password, username) {
     password: hash,
     username,
     role: "user",
+    activeGif: "",
   });
 
   return user;
