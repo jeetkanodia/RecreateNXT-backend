@@ -24,8 +24,12 @@ const userSchema = new Scheme({
     default: "user",
   },
   activeGif: {
-    type: Object,
-    default: {},
+    type: Array,
+    default: [],
+  },
+  submittedGifs: {
+    type: Array,
+    default: [],
   },
 });
 

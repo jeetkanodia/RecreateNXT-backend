@@ -6,6 +6,7 @@ const {
   createGif,
   deleteGif,
   updateGif,
+  submitGif,
 } = require("../controllers/gifController");
 const requireAuth = require("../middleware/requireAuth");
 const requireAdmin = require("../middleware/requireAdmin");
@@ -17,6 +18,9 @@ router.use(requireAuth);
 
 // GET a random Gif
 router.get("/random", getRandomGif);
+
+// SUBMIT a Gif
+router.post("/submit", submitGif);
 
 // These routes needs to have admin access
 router.use(requireAdmin);

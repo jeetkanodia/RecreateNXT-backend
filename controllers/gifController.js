@@ -22,6 +22,37 @@ const getRandomGif = async (req, res) => {
   res.status(200).json({ status: true, data: gif });
 };
 
+// submit gif
+const submitGif = async (req, res) => {
+  const { url, gif } = req.body;
+  let emptyFields = [];
+  if (!url) {
+    emptyFields.push("URL");
+  }
+  if (!gif) {
+    emptyFields.push("GIF");
+  }
+  if (emptyFields.length > 0) {
+    return res
+      .status(400)
+      .json({ error: "Please fill in all the fields", emptyFields });
+  }
+  // add doc to db
+  try {
+    const user = await User.findOne({ _id: req.user._id });
+    let obj = {
+      ytUrl: url,
+      gif: gif,
+    };
+    user.submittedGifs.push(obj);
+    await user.save();
+
+    res.status(200).json({ status: true, data: user });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 // get all Gifs
 const getGifs = async (req, res) => {
   const gifs = await Gif.find({});
@@ -119,5 +150,6 @@ module.exports = {
   createGif,
   deleteGif,
   updateGif,
+  submitGif,
 };
 //
